@@ -13,6 +13,10 @@ module Apfel
       /^\s*$/.match(content) || false
     end
 
+    def slash_comment?
+        content.strip.start_with?("//")
+    end
+
     def whole_comment
       /((^\/\*(.+)\*\/)|(^\/\/(.+)))/.match(content).to_s
     end
@@ -38,7 +42,12 @@ module Apfel
     end
 
     def key_value_pair?
-      !!(/^\s*"([^"]+)"\s*=/.match(content))
+      # Notice the [\S\s] which accounts for escaped characters, which are
+      # allowed according to the `.strings` spec.
+      #
+      # See
+      # https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/LoadingResources/Strings/Strings.html#//apple_ref/doc/uid/10000051i-CH6-SW13
+      !!(/^\s*"([^"]+)[\S\s]*=/.match(content))
     end
 
     def cleaned_content
@@ -55,18 +64,18 @@ module Apfel
 
     def key
       if key_value_pair?
-        cleaned_content.partition(/"\s*=\s*"/)[0].gsub!(/(^"|"$)/, "")
+        cleaned_content.partition(/"\s*=\s*"/)[0].gsub!(/(^")/, "")
       end
     end
 
     def value
       if key_value_pair?
-        cleaned_content.partition(/"\s*=\s*"/)[2].gsub!(/(^"|"$)/, "")
+        cleaned_content.partition(/"\s*=\s*"/)[2].rstrip.gsub!(/(^"|"$)/, "")
       end
     end
 
     def is_comment?
-     whole_comment? || open_comment? || close_comment? || in_comment
+     whole_comment? || open_comment? || close_comment? || in_comment || slash_comment?
     end
   end
 end
