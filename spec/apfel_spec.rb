@@ -80,6 +80,17 @@ multiline comment */
           }.to raise_error
         end
       end
+
+      context 'shit that fails now should not fail later' do
+        it 'parses alright' do
+          parsed = Apfel.parse('./spec/fixtures/escaped-characters.strings')
+          parsed.keys.count.should == 3
+          parsed.keys.uniq.count.should == 2
+          parsed.to_hash.count.should == 2
+          puts parsed.to_hash
+          parsed.keys.first.should == "The Google account \\\"%@\\\" doesn't match any account on WordPress.com"
+        end
+      end
     end
 
     context 'when given a file in us-ascii encoding'do
