@@ -1,0 +1,7 @@
+/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
+"The Google account \"%@\" doesn't match any account on WordPress.com" = "La cuenta de Google \"%@\" no coincide con ninguna cuenta de WordPress.com";
+
+/* Fetching an Order Failed */
+"The Order couldn't be loaded!" = "No se ha podido cargar el pedido.";
+
+"The Order couldn't be loaded!" = "Potato";
