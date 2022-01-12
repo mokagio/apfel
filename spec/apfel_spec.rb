@@ -84,10 +84,11 @@ multiline comment */
       context 'shit that fails now should not fail later' do
         it 'parses alright' do
           parsed = Apfel.parse('./spec/fixtures/escaped-characters.strings')
-          parsed.keys.count.should == 3
+          parsed.keys.count.should == 4
           parsed.keys.uniq.count.should == 2
           parsed.to_hash.count.should == 2
           puts parsed.to_hash
+          puts parsed.keys
           parsed.keys.first.should == "The Google account \\\"%@\\\" doesn't match any account on WordPress.com"
         end
       end
